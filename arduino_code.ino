@@ -53,12 +53,12 @@ void setup() {
 		delay(500);
 		Serial.print("*");
 	}
-  Serial.println("");
-  Serial.println("WiFi Connected.");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());  
+	Serial.println("");
+	Serial.println("WiFi Connected.");
+	Serial.print("IP address: ");
+	Serial.println(WiFi.localIP());  
 
-  ThingSpeak.begin(espclient);
+	ThingSpeak.begin(espclient);
 
 	if (tcs.begin()) {
     Serial.println("Found sensor");
