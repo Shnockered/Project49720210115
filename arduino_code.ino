@@ -107,7 +107,7 @@ void conversiontoPH(void)
 		{
 		Serial.println("Problem writing to channel. HTTP error code " + String(httpCode));
 		}  
-    stopping=1; 
+	stopping=1; 
 	}
 	if ((colorTemp < 0) || (colorTemp > 8000)){
 	Serial.println("Value not found");
