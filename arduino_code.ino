@@ -39,7 +39,8 @@ WiFiClient  espclient;
 
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X);
 
-void setup() {
+void setup() 
+{
 	Serial.begin(115200);
 	delay(15000);
 	Serial.println("");
@@ -60,48 +61,56 @@ void setup() {
 
 	ThingSpeak.begin(espclient);
 
-	if (tcs.begin()) {
-    Serial.println("Found sensor");
-  } else {
-    Serial.println("No TCS34725 found ... check your connections");
-    while (1);
-  }
+	if (tcs.begin()) 
+	{
+		Serial.println("Found sensor");
+	} 
+	else 
+	{
+		Serial.println("No TCS34725 found ... check your connections");
+		while (1);
+	}
 }
 
-void loop() {
-  if(stopping ==1) {
-   
-  }
-  else {
-  delay(1000);
-  Serial.println("Align Strip For Reading");
-  delay(8000);
-  Serial.println("Reading in Progress");
-  conversiontoPH();
-  }
+void loop() 
+{
+	if(stopping ==1) 
+	{
+		
+	}
+	else 
+	{
+	delay(1000);
+	Serial.println("Align Strip For Reading");
+	delay(8000);
+	Serial.println("Reading in Progress");
+	conversiontoPH();
+	}
 }
 
 
-void conversiontoPH(void){
-  uint16_t r, g, b, c, colorTemp;
-  tcs.getRawData(&r, &g, &b, &c);
-  colorTemp = tcs.calculateColorTemperature_dn40(r, g, b, c);
-  if ((colorTemp > 0) && (colorTemp < 8000)){
-    PH=2.7;
-      int httpCode = ThingSpeak.writeField(channel1, 1, PH, apikey);
+void conversiontoPH(void)
+{
+	uint16_t r, g, b, c, colorTemp;
+	tcs.getRawData(&r, &g, &b, &c);
+	colorTemp = tcs.calculateColorTemperature_dn40(r, g, b, c);
+	if ((colorTemp > 0) && (colorTemp < 8000))
+	{
+		PH=2.7;
+		int httpCode = ThingSpeak.writeField(channel1, 1, PH, apikey);
 
-      if (httpCode == 200) {
-        Serial.println("Channel write successful.");
-      }
-      else {
-        Serial.println("Problem writing to channel. HTTP error code " + String(httpCode));
-      }  
-    
-    stopping=1;
-    
-  }
-  if ((colorTemp < 0) || (colorTemp > 8000)){
-  Serial.println("Value not found");
-  loop(); 
-  }
+		if (httpCode == 200) 
+		{
+			Serial.println("Channel write successful.");
+		}
+		else 
+		{
+		Serial.println("Problem writing to channel. HTTP error code " + String(httpCode));
+		}  
+    stopping=1; 
+	}
+	if ((colorTemp < 0) || (colorTemp > 8000)){
+	Serial.println("Value not found");
+	loop(); 
+	}
 }
