@@ -80,11 +80,11 @@ void loop()
 	}
 	else 
 	{
-	delay(1000);
-	Serial.println("Align Strip For Reading");
-	delay(8000);
-	Serial.println("Reading in Progress");
-	conversiontoPH();
+		delay(1000);
+		Serial.println("Align Strip For Reading");
+		delay(8000);
+		Serial.println("Reading in Progress");
+		conversiontoPH();
 	}
 }
 
@@ -109,8 +109,9 @@ void conversiontoPH(void)
 		}  
 	stopping=1; 
 	}
-	if ((colorTemp < 0) || (colorTemp > 8000)){
-	Serial.println("Value not found");
-	loop(); 
+	if ((colorTemp < 0) || (colorTemp > 8000))
+	{
+		Serial.println("Value not found");
+		loop(); 
 	}
 }
