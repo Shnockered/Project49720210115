@@ -18,6 +18,9 @@
 //Date: 2019
 //Availability: https://github.com/nothans/thingspeak-esp-examples/blob/master/examples/RSSI_to_ThingSpeak.ino
 
+/* Pin 1 is PB
+Pin 3,4,5,6,7... etc are LEDs. */
+
 
 #include "ThingSpeak.h"
 #include <Wire.h>
