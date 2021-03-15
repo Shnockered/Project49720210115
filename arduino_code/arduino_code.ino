@@ -159,6 +159,39 @@ uint16_t collectData(void)
 	return colorTemp;
 }
 
+void Storedata(uint16_t colorTemp)
+{
+	uint16_t colorTemp
+	String url1 = "/trigger/Flush/with/key/";
+
+	client.print(String("GET ") + url1 + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Data: " + colorTemp + "\r\n" + "User-Agent: BuildFailureDetectorESP8266\r\n");
+
+	Serial.println("request sent");
+	while (client.connected()) 
+	{
+		String line = client.readStringUntil('\n');
+		if (line == "\r") 
+		{
+			Serial.println("headers received");
+			break;
+		}
+	}
+	String line = client.readStringUntil('\n');
+
+	if (line=="")
+	{
+		Serial.println("reply was:");
+		Serial.println(line);
+		Serial.println("Success");
+	}
+	else
+	{
+		Serial.println("reply was:");
+		Serial.println(line);
+		Serial.println("No A Success");
+	}
+}
+
 void Hydrated(uint16_t colorTemp)
 {
 	uint16_t colorTemp
@@ -218,9 +251,6 @@ void Hydrated(uint16_t colorTemp)
 		Serial.println(line);
 		Serial.println("No A Success");
 	}
-	
-	
-	
 }
 
 /* 
