@@ -47,6 +47,18 @@ void setup()
 	Serial.begin(115200);
 	delay(15000);
 	Serial.println("");
+	
+	if (tcs.begin()) 
+	{
+		Serial.println("Found sensor");
+	} 
+	else 
+	{
+		Serial.println("No TCS34725 found ... check your connections");
+		while (1);
+	}
+	
+	
 	Serial.println("");
 	Serial.print("Connecting To: ");
 	Serial.println(ssid);
@@ -63,21 +75,11 @@ void setup()
 	Serial.println(WiFi.localIP());  
 
 	ThingSpeak.begin(espclient);
-
-	if (tcs.begin()) 
-	{
-		Serial.println("Found sensor");
-	} 
-	else 
-	{
-		Serial.println("No TCS34725 found ... check your connections");
-		while (1);
-	}
 }
 
 void loop() 
 {
-	if(stopping ==1) 
+	/* if(stopping ==1) 
 	{
 		
 	}
@@ -88,10 +90,10 @@ void loop()
 		delay(8000);
 		Serial.println("Reading in Progress");
 		conversiontoPH();
-	}
+	} */
 }
 
-
+/* 
 void conversiontoPH(void)
 {
 	uint16_t r, g, b, c, colorTemp;
@@ -117,4 +119,4 @@ void conversiontoPH(void)
 		Serial.println("Value not found");
 		loop(); 
 	}
-}
+} */
