@@ -44,9 +44,29 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS347
 
 void setup() 
 {
+	//LED Setup 
+	pinMode(__, OUTPUT); //LED1 RGB Sensor
+	pinMode(__, OUTPUT); //LED2 Wifi
+	pinMode(__, OUTPUT); //LED3 IFTTT Host
+	pinMode(__, OUTPUT); //LED4 Processing
+	//TEST
+	digitalWrite(__, HIGH);
+	digitalWrite(__, HIGH);
+	digitalWrite(__, HIGH);
+	digitalWrite(__, HIGH);
+	delay(1000);
+	digitalWrite(__, LOW);
+	digitalWrite(__, LOW);
+	digitalWrite(__, LOW);
+	digitalWrite(__, LOW);
+	
+	//Input Setup
+	pinMode(__, INPUT) 
+	
 	Serial.begin(115200);
-	delay(15000);
+	delay(100);
 	Serial.println("");
+	Serial.println("INITALIZED SERIAL CONNECTION");
 	
 	if (tcs.begin()) 
 	{
@@ -57,17 +77,14 @@ void setup()
 		Serial.println("No TCS34725 found ... check your connections");
 		while (1);
 	}
-	
-	
-	Serial.println("");
 	Serial.print("Connecting To: ");
 	Serial.println(ssid);
 	WiFi.begin(ssid, password);
 
 	while (WiFi.status() != WL_CONNECTED)
 	{
-		delay(500);
-		Serial.print("*");
+		delay(750);
+		Serial.printlm("NOT CONNECTED TO WIFI");
 	}
 	Serial.println("");
 	Serial.println("WiFi Connected.");
