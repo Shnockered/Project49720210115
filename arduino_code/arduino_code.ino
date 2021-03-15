@@ -26,6 +26,7 @@ Pin 3,4,5,6,7... etc are LEDs. */
 #include <Wire.h>
 #include "Adafruit_TCS34725.h"
 #include <ESP8266WiFi.h>
+#include <WiFiClientSecure.h>
 
 const char* ssid = "degroot"; 
 const char* password = "degroot143!";
@@ -35,6 +36,9 @@ const char* password = "degroot143!";
 
 unsigned long channel1 = channelid;
 const char * apikey = apikey_write;
+
+const char* host = "maker.ifttt.com";
+const int httpsPort = 443;
 
 float PH;
 int stopping=0;
@@ -71,6 +75,7 @@ void setup()
 	if (tcs.begin()) 
 	{
 		Serial.println("Found sensor");
+		digitalWrite(__, HIGH);
 	} 
 	else 
 	{
@@ -79,6 +84,7 @@ void setup()
 	}
 	Serial.print("Connecting To: ");
 	Serial.println(ssid);
+	WiFi.mode(WIFI_STA);
 	WiFi.begin(ssid, password);
 
 	while (WiFi.status() != WL_CONNECTED)
@@ -87,15 +93,50 @@ void setup()
 		Serial.printlm("NOT CONNECTED TO WIFI");
 	}
 	Serial.println("");
+	digitalWrite(__, HIGH);
 	Serial.println("WiFi Connected.");
 	Serial.print("IP address: ");
 	Serial.println(WiFi.localIP());  
 
 	ThingSpeak.begin(espclient);
+	
+	WiFiClientSecure client;
+	Serial.print("connecting to ");
+	Serial.println(host);
+	if (!client.connect(host, httpsPort)) 
+	{
+		Serial.println("connection failed");
+		return;
+	}
+	
+	digitalWrite(__, HIGH);
 }
 
 void loop() 
 {
+	digitalWrite(__, HIGH);
+	uint16_t colorTemp;
+	while (digitalRead()==HIGH)
+	{
+		digitalWrite(__, LOW);
+		Serial.println("Button Pressed, Reading Data");
+		colorTemp = collectData();
+		Serial.println("Data: " + ColorTemp);
+		Storedata(colorTemp);
+		if(colorTemp > 4500 %% colorTemp <6800)
+		{
+			Hydrated(colorTemp);
+		}
+		/* if(colorTemp <= 4500)
+		{
+			DeHydrated(colorTemp);
+		}
+		if(colorTemp >= 6800)
+		{
+			ReadError(colorTemp);
+		} */
+		delay(5000)
+	}
 	/* if(stopping ==1) 
 	{
 		
@@ -108,6 +149,78 @@ void loop()
 		Serial.println("Reading in Progress");
 		conversiontoPH();
 	} */
+}
+
+uint16_t collectData(void)
+{
+	uint16_t r, g, b, c, colorTemp;
+	tcs.getRawData(&r, &g, &b, &c);
+	colorTemp = tcs.calculateColorTemperature_dn40(r, g, b, c);
+	return colorTemp;
+}
+
+void Hydrated(uint16_t colorTemp)
+{
+	uint16_t colorTemp
+	String url1 = "/trigger/Flush/with/key/";
+	String url2 = "/trigger/Flush/with/key/";
+
+	client.print(String("GET ") + url1 + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Data: " + colorTemp + "\r\n" + "User-Agent: BuildFailureDetectorESP8266\r\n");
+
+	Serial.println("request sent");
+	while (client.connected()) 
+	{
+		String line = client.readStringUntil('\n');
+		if (line == "\r") 
+		{
+			Serial.println("headers received");
+			break;
+		}
+	}
+	String line = client.readStringUntil('\n');
+
+	if (line=="")
+	{
+		Serial.println("reply was:");
+		Serial.println(line);
+		Serial.println("Success");
+	}
+	else
+	{
+		Serial.println("reply was:");
+		Serial.println(line);
+		Serial.println("No A Success");
+	}
+
+	client.print(String("GET ") + url2 + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Data: " + colorTemp + "\r\n" + "User-Agent: BuildFailureDetectorESP8266\r\n");
+
+	Serial.println("request sent");
+	while (client.connected()) 
+	{
+		String line = client.readStringUntil('\n');
+		if (line == "\r") 
+		{
+			Serial.println("headers received");
+			break;
+		}
+	}
+	String line = client.readStringUntil('\n');
+
+	if (line=="")
+	{
+		Serial.println("reply was:");
+		Serial.println(line);
+		Serial.println("Success");
+	}
+	else
+	{
+		Serial.println("reply was:");
+		Serial.println(line);
+		Serial.println("No A Success");
+	}
+	
+	
+	
 }
 
 /* 
