@@ -49,23 +49,23 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS347
 void setup() 
 {
 	//LED Setup 
-	pinMode(__, OUTPUT); //LED1 RGB Sensor
-	pinMode(__, OUTPUT); //LED2 Wifi
-	pinMode(__, OUTPUT); //LED3 IFTTT Host
-	pinMode(__, OUTPUT); //LED4 Processing
+	pinMode(3, OUTPUT); //LED1 RGB Sensor
+	pinMode(4, OUTPUT); //LED2 Wifi
+	pinMode(5, OUTPUT); //LED3 IFTTT Host
+	pinMode(6, OUTPUT); //LED4 Processing
 	//TEST
-	digitalWrite(__, HIGH);
-	digitalWrite(__, HIGH);
-	digitalWrite(__, HIGH);
-	digitalWrite(__, HIGH);
+	digitalWrite(3, HIGH);
+	digitalWrite(4, HIGH);
+	digitalWrite(5, HIGH);
+	digitalWrite(6, HIGH);
 	delay(1000);
-	digitalWrite(__, LOW);
-	digitalWrite(__, LOW);
-	digitalWrite(__, LOW);
-	digitalWrite(__, LOW);
+	digitalWrite(3, LOW);
+	digitalWrite(4, LOW);
+	digitalWrite(5, LOW);
+	digitalWrite(6, LOW);
 	
 	//Input Setup
-	pinMode(__, INPUT) 
+	pinMode(1, INPUT) 
 	
 	Serial.begin(115200);
 	delay(100);
@@ -75,7 +75,7 @@ void setup()
 	if (tcs.begin()) 
 	{
 		Serial.println("Found sensor");
-		digitalWrite(__, HIGH);
+		digitalWrite(3, HIGH);
 	} 
 	else 
 	{
@@ -93,7 +93,7 @@ void setup()
 		Serial.printlm("NOT CONNECTED TO WIFI");
 	}
 	Serial.println("");
-	digitalWrite(__, HIGH);
+	digitalWrite(4, HIGH);
 	Serial.println("WiFi Connected.");
 	Serial.print("IP address: ");
 	Serial.println(WiFi.localIP());  
@@ -109,21 +109,21 @@ void setup()
 		return;
 	}
 	
-	digitalWrite(__, HIGH);
+	digitalWrite(5, HIGH);
 }
 
 void loop() 
 {
-	digitalWrite(__, HIGH);
 	uint16_t colorTemp;
+	digitalWrite(6, HIGH);
 	while (digitalRead()==HIGH)
 	{
-		digitalWrite(__, LOW);
+		digitalWrite(6, LOW);
 		Serial.println("Button Pressed, Reading Data");
 		colorTemp = collectData();
 		Serial.println("Data: " + ColorTemp);
 		Storedata(colorTemp);
-		if(colorTemp > 4500 %% colorTemp <6800)
+		if(colorTemp > 4500 && colorTemp < 6800)
 		{
 			Hydrated(colorTemp);
 		}
@@ -253,7 +253,7 @@ void Hydrated(uint16_t colorTemp)
 	}
 }
 
-/* 
+
 void conversiontoPH(void)
 {
 	uint16_t r, g, b, c, colorTemp;
@@ -279,4 +279,4 @@ void conversiontoPH(void)
 		Serial.println("Value not found");
 		loop(); 
 	}
-} */
+}
